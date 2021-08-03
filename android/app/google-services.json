@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "18409459095",
+    "project_id": "rentlow-346b1",
+    "storage_bucket": "rentlow-346b1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:18409459095:android:b60d261562e915349448d2",
+        "android_client_info": {
+          "package_name": "com.rentlow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "18409459095-98u5g4ggumocdegjr12plg1p02uosn0a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rentlow",
+            "certificate_hash": "cecaba944cf0fcbc908cf5a97b498c895316e710"
+          }
+        },
+        {
+          "client_id": "18409459095-ejk7mhigmmptn1bqn2oefatpbbfedqs0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIAStScK9Dm5MLtSD5pvvhPtGpdKjjTUQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "18409459095-ejk7mhigmmptn1bqn2oefatpbbfedqs0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
