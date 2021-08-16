@@ -4,9 +4,9 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  KeyboardAvoidingView,
   TouchableOpacity,
   Image,
+  ScrollView
 } from 'react-native';
 import facebook from '../../assets/images/fb.png';
 import google from '../../assets/images/google.png';
@@ -108,7 +108,7 @@ export default function Login({navigation}) {
         <Text style={styles.welcome}>Welcome Back</Text>
         <Text style={styles.continue}>Login To Continue</Text>
       </View>
-      <KeyboardAvoidingView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.form}>
           <View style={styles.inputview}>
             <Text style={styles.formtext}>EMAIL</Text>
@@ -165,7 +165,7 @@ export default function Login({navigation}) {
             </TouchableOpacity>
           </View>
         </View>
-      </KeyboardAvoidingView>
+      </ScrollView>
     </View>
   );
 }
@@ -240,6 +240,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: '5%',
+    marginBottom:'10%'
   },
   icon: {
     width: 30,

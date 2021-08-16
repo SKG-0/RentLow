@@ -16,7 +16,7 @@ export default function Tabs() {
       tabBarOptions={{
         showLabel: false,
         style: {
-          height: '8%',
+          height: '9%',
           backgroundColor: 'white',
         },
         keyboardHidesTabBar: true,

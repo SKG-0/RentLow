@@ -1,10 +1,10 @@
 import React from 'react'
 import { View, Text,StyleSheet} from 'react-native'
 
-export default function Button() {
+export default function Button({text}) {
     return (
         <View style={styles.button}>
-            <Text style={styles.text}>Next</Text>
+            <Text style={styles.text}>{text}</Text>
         </View>
     )
 }

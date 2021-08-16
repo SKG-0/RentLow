@@ -1,6 +1,15 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+  Pick
+} from 'react-native';
 import Button from '../../assets/components/Button';
+import ModalDropdown from 'react-native-modal-dropdown';
 export default function Sell({navigation}) {
   const [error1, seterror1] = useState(null);
   const [error2, seterror2] = useState(null);
@@ -8,6 +17,7 @@ export default function Sell({navigation}) {
   const [heading, setheading] = useState('');
   const [description, setdescription] = useState('');
   const [price, setprice] = useState(null);
+  const [category, setcategory] = useState(null);
   const headingvalidator = () => {
     if (heading.length < 10) {
       seterror1('Enter minimum 10 characters');
@@ -23,15 +33,17 @@ export default function Sell({navigation}) {
     }
   };
   const pricevalidator = () => {
-    if (price==0) {
-      seterror3('Price cannot be 0');
+    if (price == 0||price==null) {
+      seterror3('Price cannot be 0 or empty');
     } else {
       seterror3('');
     }
   };
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
-      <Text style={styles.headtext}>Post Your Ad</Text>
+      <View style={{backgroundColor: '#4d94ff'}}>
+        <Text style={styles.headtext}>Post Your Ad</Text>
+      </View>
       <ScrollView>
         <Text style={styles.headingtext}>Heading</Text>
         <TextInput
@@ -56,27 +68,39 @@ export default function Sell({navigation}) {
           placeholder="Product rent"
           style={styles.price}
           onChangeText={price => setprice(price)}
-          keyboardType='numeric'
+          keyboardType="numeric"
           onBlur={() => pricevalidator()}
         />
         <Text style={styles.error}>{error3}</Text>
-        <Text style={styles.headingtext}>Location</Text>
-        <TextInput
-          placeholder="Location"
+        <Text style={styles.headingtext}>Category</Text>
+        <ModalDropdown
+          onSelect={category => setcategory(category)}
+          options={['Bike', 'Book', 'Car', 'Electronics', 'Fashion','Furniture','Phones','Property','Other']}
+          textStyle={{fontSize: 18, color: 'gray',marginTop:'2%',marginLeft:'2%'}}
+          defaultValue="Bike"
+          dropdownTextStyle={{fontSize: 18, color: '#6e6c69'}}
+          dropdownStyle={{
+            width:'90%',
+            borderBottomLeftRadius:10,
+            borderBottomRightRadius:10,
+            marginTop:'3%'
+          }}
           style={styles.price}
         />
+        <Text style={styles.headingtext}>Location</Text>
+        <TextInput placeholder="Location" style={styles.price} />
       </ScrollView>
-      <TouchableOpacity onPress={()=>{
-        if(error1==''&&error2==''&&error3==''){
-          navigation.navigate('Sell1');
-        }
-        else{
-          headingvalidator();
-          descriptionvalidator();
-          pricevalidator();
-        }
-      }}>
-        <Button />
+      <TouchableOpacity
+        onPress={() => {
+          if (error1 == '' && error2 == '' && error3 == '') {
+            navigation.navigate('Sell1');
+          } else {
+            headingvalidator();
+            descriptionvalidator();
+            pricevalidator();
+          }
+        }}>
+        <Button text="Next" />
       </TouchableOpacity>
     </View>
   );
@@ -86,8 +110,8 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontFamily: 'NotoSansJP-Bold',
     marginHorizontal: '4%',
-    marginTop: '3%',
-    color: '#333333',
+    color: 'white',
+    marginVertical: '-2%',
   },
   heading: {
     width: '90%',
@@ -125,9 +149,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-end',
     flex: 1,
-    marginBottom: '1%'
+    marginBottom: '1%',
   },
-  price:{
+  price: {
     width: '90%',
     alignSelf: 'center',
     height: 45,
@@ -135,5 +159,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderColor: '#4d94ff',
     borderWidth: 0.8,
-  }
+  },
 });

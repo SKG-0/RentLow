@@ -22,9 +22,9 @@ export default function Ad() {
                     <View>
                         <Text style={styles.time}>1 week</Text>
                     </View>
-                    <View>
+                    <TouchableOpacity>
                         <Icon name="heart-outline" size={18} style={styles.icon} color='#8c8c8c' />
-                    </View>
+                    </TouchableOpacity>
                 </View>
             </View>
         </TouchableOpacity>
@@ -36,7 +36,7 @@ const styles=StyleSheet.create({
         backgroundColor:'white',
         height:160,
         borderRadius:20,
-        elevation:10,
+        elevation:4,
         display:'flex',
         flexDirection:'row',
         alignSelf:'center',

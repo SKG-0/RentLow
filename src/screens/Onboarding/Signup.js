@@ -4,9 +4,9 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  KeyboardAvoidingView,
   TouchableOpacity,
   Image,
+  ScrollView
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import facebook from '../../assets/images/fb.png';
@@ -107,7 +107,7 @@ export default function Signup({navigation}) {
         <Text style={styles.welcome}>Hello There</Text>
         <Text style={styles.continue}>Signup To Continue</Text>
       </View>
-      <KeyboardAvoidingView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.form}>
           <View style={styles.inputview}>
             <Text style={styles.formtext}>EMAIL</Text>
@@ -162,7 +162,7 @@ export default function Signup({navigation}) {
             </TouchableOpacity>
           </View>
         </View>
-      </KeyboardAvoidingView>
+      </ScrollView>
     </View>
   );
 }
@@ -237,6 +237,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: '5%',
+    marginBottom:'10%'
   },
   icon: {
     width: 30,
