@@ -52,8 +52,6 @@ export default function Signup({navigation}) {
           if (error.code === 'auth/invalid-email') {
             setemailerror('That email address is invalid!');
           }
-
-          alert(error);
         });
     } else {
       emailvalidator();

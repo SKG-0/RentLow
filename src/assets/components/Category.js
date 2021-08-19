@@ -11,7 +11,7 @@ export default function Category({image,text}) {
 }
 const styles=StyleSheet.create({
     category:{
-        width:100,
+        width:'25%',
         height:90,
         backgroundColor:'white',
         borderRadius:10,

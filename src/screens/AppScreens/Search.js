@@ -11,7 +11,7 @@ import furniture from '../../assets/images/furniture.png';
 import other from '../../assets/images/other.png';
 import phone from '../../assets/images/phone.png';
 import property from '../../assets/images/property.png';
-export default function Search() {
+export default function Search({navigation}) {
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <View style={{backgroundColor: '#4d94ff'}}>
@@ -28,6 +28,7 @@ export default function Search() {
           placeholder="Fridge , Mobile"
           style={styles.input}
           placeholderTextColor="#8c8c8c"
+          onSubmitEditing={()=> navigation.navigate('Search1')}
         />
       </View>
       <Text style={styles.alltext}>All Categories</Text>
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
   },
   categories: {
     marginTop: '5%',
-    marginHorizontal: '4%',
+    marginHorizontal: '3%',
     height: '60%',
   },
 });

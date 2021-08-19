@@ -10,6 +10,7 @@ import {
 import female from '../../assets/images/female1.png';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon2 from 'react-native-vector-icons/FontAwesome';
+import auth from '@react-native-firebase/auth';
 export default function Profile({navigation}) {
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
@@ -33,19 +34,31 @@ export default function Profile({navigation}) {
       </View>
       <View>
         <ScrollView style={styles.lists}>
-        <TouchableOpacity style={styles.list} onPress={()=> navigation.navigate('Edit')}>
+          <TouchableOpacity
+            style={styles.list}
+            onPress={() => navigation.navigate('Edit')}>
             <Icon2 name="pencil" size={26} color="#4d94ff" />
             <Text style={styles.listext}>Edit Profile</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.list} onPress={()=> navigation.navigate('Favourite')}>
+          <TouchableOpacity
+            style={styles.list}
+            onPress={() => navigation.navigate('Favourite')}>
             <Icon name="heart-outline" size={26} color="#4d94ff" />
             <Text style={styles.listext}>Favourites</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.list} onPress={()=> navigation.navigate('MyAds')}>
+          <TouchableOpacity
+            style={styles.list}
+            onPress={() => navigation.navigate('MyAds')}>
             <Icon name="plus-circle-outline" size={26} color="#4d94ff" />
             <Text style={styles.listext}>My Ads</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.list}>
+          <TouchableOpacity
+            style={styles.list}
+            onPress={() => {
+              auth()
+                .signOut()
+                .then(() => console.log('User signed out!'));
+            }}>
             <Icon name="power" size={26} color="red" />
             <Text style={styles.listext}>Log Out</Text>
           </TouchableOpacity>
@@ -96,9 +109,9 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
   },
-  lists:{
-    marginTop:'12%',
-    marginHorizontal:'4%'
+  lists: {
+    marginTop: '12%',
+    marginHorizontal: '4%',
   },
   list: {
     display: 'flex',
@@ -112,6 +125,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#001940',
     marginTop: '-8%',
-    marginLeft:'10%'
+    marginLeft: '10%',
   },
 });

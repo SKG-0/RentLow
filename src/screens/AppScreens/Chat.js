@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import face from '../../assets/images/female1.png';
-export default function Chat() {
+export default function Chat({navigation}) {
   return (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <View style={{backgroundColor: '#4d94ff'}}>
@@ -16,14 +16,18 @@ export default function Chat() {
       </View>
       <ScrollView style={styles.chats} showsVerticalScrollIndicator={false}>
         <TouchableOpacity style={styles.chat}>
+          <TouchableOpacity onPress={()=> navigation.navigate('UserProfile')}>
             <Image source={face} style={styles.image} />
+          </TouchableOpacity>
           <View style={styles.chatext}>
             <Text style={styles.name}>Sample name</Text>
             <Text style={styles.message}>hshsu hsugubsdu</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.chat}>
+        <TouchableOpacity onPress={()=> navigation.navigate('UserProfile')}>
             <Image source={face} style={styles.image} />
+          </TouchableOpacity>
           <View style={styles.chatext}>
             <Text style={styles.name}>Sample name</Text>
             <Text style={styles.message}>hshsu hsugubsdu</Text>
