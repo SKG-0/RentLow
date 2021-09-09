@@ -11,17 +11,17 @@ export default function Button({text}) {
 const styles=StyleSheet.create({
     button:{
         width: '90%',
-        height: 50,
+        height: '27.5%',
         alignSelf: 'center',
         backgroundColor: '#4d94ff',
         marginTop: '5%',
         borderRadius: 10,
+        
     },
     text:{
         color: 'white',
         textAlign: 'center',
-        textAlignVertical: 'center',
-        fontSize: 18,
-        fontFamily: 'NotoSansJP-Bold',
+        fontSize: 16,
+        fontFamily: 'NotoSansJP-Bold'
     }
 })

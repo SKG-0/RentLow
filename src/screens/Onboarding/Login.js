@@ -6,18 +6,18 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
-  ScrollView
+  ScrollView,
+  ActivityIndicator,
 } from 'react-native';
-import facebook from '../../assets/images/fb.png';
 import google from '../../assets/images/google.png';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-import {LoginManager, AccessToken} from 'react-native-fbsdk';
 export default function Login({navigation}) {
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
   const [emailerror, setemailerror] = useState(null);
   const [passworderror, setpassworderror] = useState(null);
+  const [loading, setloading] = useState(false);
   useEffect(() => {
     GoogleSignin.configure({
       webClientId:
@@ -40,52 +40,32 @@ export default function Login({navigation}) {
   }
   async function emailauth() {
     if (emailerror == '' && passworderror == '') {
+      setloading(true);
       auth()
-        .createUserWithEmailAndPassword(email, password)
+        .signInWithEmailAndPassword(email, password)
         .then(() => {
           navigation.navigate('AppStack');
+          setloading(false);
         })
         .catch(error => {
-          if (error.code === 'auth/email-already-in-use') {
-            setemailerror('That email address is already in use!');
-          }
-
           if (error.code === 'auth/invalid-email') {
-            setemailerror('That email address is invalid!');
+            setemailerror('Invalid email');
+            setloading(false);
           }
 
-          alert(error);
+          if (error.code === 'auth/wrong-password') {
+            setpassworderror('Invalid password');
+            setloading(false);
+          }
+          if (error.code === 'auth/user-not-found') {
+            setemailerror('User not found');
+            setloading(false);
+          }
         });
     } else {
       emailvalidator();
       passwordvalidator();
     }
-  }
-  async function onFacebookButtonPress() {
-    // Attempt login with permissions
-    const result = await LoginManager.logInWithPermissions([
-      'public_profile',
-      'email',
-    ]);
-
-    if (result.isCancelled) {
-      throw 'User cancelled the login process';
-    }
-
-    // Once signed in, get the users AccesToken
-    const data = await AccessToken.getCurrentAccessToken();
-
-    if (!data) {
-      throw 'Something went wrong obtaining access token';
-    }
-
-    // Create a Firebase credential with the AccessToken
-    const facebookCredential = auth.FacebookAuthProvider.credential(
-      data.accessToken,
-    );
-
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(facebookCredential);
   }
   const emailvalidator = () => {
     const regex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
@@ -103,7 +83,7 @@ export default function Login({navigation}) {
     }
   };
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: 'black'}}>
       <View style={styles.header}>
         <Text style={styles.welcome}>Welcome Back</Text>
         <Text style={styles.continue}>Login To Continue</Text>
@@ -118,25 +98,56 @@ export default function Login({navigation}) {
               style={styles.input}
               keyboardType="email-address"
               onChangeText={email => setemail(email)}
-              onBlur={() => emailvalidator()}
+              onSubmitEditing={() => emailvalidator()}
             />
           </View>
           <Text style={styles.error}>{emailerror}</Text>
           <View style={styles.inputview}>
-            <Text style={styles.formtext2}>PASSWORD</Text>
+            <Text style={styles.formtext}>PASSWORD</Text>
             <TextInput
               placeholder="Enter your password"
               placeholderTextColor="#a6a6a6"
               style={styles.input}
               secureTextEntry={true}
               onChangeText={password => setpassword(password)}
-              onBlur={() => passwordvalidator()}
+              onSubmitEditing={() => passwordvalidator()}
             />
           </View>
           <Text style={styles.error}>{passworderror}</Text>
+          <TouchableOpacity
+            onPress={() => {
+              emailerror == ''
+                ? auth()
+                    .sendPasswordResetEmail(email)
+                    .then(function (user) {
+                      alert('Password reset link sent !');
+                    })
+                    .catch(error => {
+                      if (error.code === 'auth/invalid-email') {
+                        setemailerror('User not registered');
+                      }
+                      if (error.code === 'auth/user-not-found') {
+                        setemailerror('No user found');
+                      }
+                    })
+                : emailvalidator();
+            }}>
+            <Text style={{color: '#4d94ff', marginTop: '-1%'}}>
+              Forgot Password ?
+            </Text>
+          </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.button} onPress={() => emailauth()}>
           <Text style={styles.buttontext}>LOGIN</Text>
+          {loading == true ? (
+            <ActivityIndicator
+              color="white"
+              size={20}
+              style={{alignSelf: 'center', marginLeft: '5%'}}
+            />
+          ) : (
+            <View></View>
+          )}
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
           <Text style={styles.signup}>
@@ -149,19 +160,13 @@ export default function Login({navigation}) {
           <View style={styles.buttons}>
             <TouchableOpacity
               style={styles.google}
-              onPress={() => onGoogleButtonPress()}>
-              <Image source={google} style={styles.icon} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.google}
               onPress={() =>
-                onFacebookButtonPress()
-                  .then(()=> navigation.navigate('AppStack'))
-                  .catch(err=>{
-                    alert(err);
-                  })
+                onGoogleButtonPress()
+                  .then(() => navigation.navigate('AppStack'))
+                  .catch(err => console.log(err))
               }>
-              <Image source={facebook} style={styles.icon} />
+              <Text style={styles.googletext}>Continue With Google</Text>
+              <Image source={google} style={styles.icon} />
             </TouchableOpacity>
           </View>
         </View>
@@ -171,37 +176,39 @@ export default function Login({navigation}) {
 }
 const styles = StyleSheet.create({
   header: {
-    height: 130,
+    height: '15%',
     backgroundColor: '#4d94ff',
   },
   welcome: {
-    fontSize: 34,
+    fontSize: 30,
     marginTop: 10,
-    marginLeft: '6%',
+    marginHorizontal: '6%',
     fontFamily: 'NotoSansJP-Thin',
     color: 'white',
   },
   continue: {
-    fontSize: 20,
-    marginLeft: '6%',
+    fontSize: 18,
+    marginHorizontal: '6%',
     fontFamily: 'NotoSansJP-Regular',
     color: 'white',
-    marginTop: -40,
+    marginTop:'-10%'
   },
   form: {
-    marginLeft: '6%',
-    marginTop: '15%',
-    marginRight: '5%',
+    marginHorizontal: '6%',
+    marginTop: '10%',
+    marginRight: '5%'
   },
   formtext: {
     fontFamily: 'NotoSansJP-Black',
-    fontSize: 18,
+    fontSize: 16,
+    color:'white'
   },
   input: {
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#a6a6a6',
-    fontSize: 17,
-    marginTop: '-3%',
+    borderBottomWidth: 0.3,
+    borderBottomColor: '#595959',
+    fontSize: 14,
+    paddingTop:'-5%',
+    color:'#cccccc'
   },
   formtext2: {
     fontFamily: 'NotoSansJP-Black',
@@ -209,24 +216,27 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '90%',
-    height: '9%',
+    height: 40,
     alignSelf: 'center',
     backgroundColor: '#4d94ff',
     marginTop: '5%',
     borderRadius: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   buttontext: {
     color: 'white',
     textAlign: 'center',
     textAlignVertical: 'center',
-    fontSize: 17,
+    fontSize: 14,
     fontFamily: 'NotoSansJP-Bold',
   },
   signup: {
     textAlign: 'center',
     fontSize: 14,
-    marginTop: '1%',
     fontFamily: 'NotoSansJP-Regular',
+    color:'white'
   },
   or: {
     fontSize: 20,
@@ -240,25 +250,33 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: '5%',
-    marginBottom:'10%'
+    marginBottom: '10%',
   },
   icon: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
     alignSelf: 'center',
   },
   google: {
-    backgroundColor: 'white',
-    elevation: 6,
-    width: '30%',
-    height: 50,
-    alignItems: 'center',
+    backgroundColor: '#333333',
+    width: '90%',
+    height: 45,
     justifyContent: 'center',
     borderRadius: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    paddingVertical: '3%',
   },
   error: {
-    color: 'red',
+    color: '#ff6666',
     fontFamily: 'NotoSansJP-Regular',
     fontSize: 14,
+  },
+  googletext: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginRight: '5%',
+    justifyContent: 'center',
+    color: 'white',
   },
 });

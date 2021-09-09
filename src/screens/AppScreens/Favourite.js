@@ -3,9 +3,9 @@ import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import Ad from '../../assets/components/Ad';
 export default function Favourite() {
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: 'black'}}>
       <View style={styles.header}>
-        <Text style={styles.headtext}>Favourite Ads</Text>
+        <Text style={styles.headtext}>Favourites</Text>
       </View>
       <ScrollView>
         <Ad />
@@ -17,14 +17,10 @@ export default function Favourite() {
   );
 }
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: '#4d94ff',
-  },
   headtext: {
-    fontSize: 30,
+    fontSize: 26,
     fontFamily: 'NotoSansJP-Bold',
     marginHorizontal: '4%',
-    color: 'white',
-    marginVertical: '-2%',
+    color: '#4d94ff'
   },
 });

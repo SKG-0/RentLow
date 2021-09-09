@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -6,107 +6,133 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
-  ScrollView
+  ScrollView,
+  ActivityIndicator
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
-import facebook from '../../assets/images/fb.png';
 import google from '../../assets/images/google.png';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {LoginManager, AccessToken} from 'react-native-fbsdk'
+import firestore from '@react-native-firebase/firestore';
 export default function Signup({navigation}) {
   const [email, setemail] = useState('');
+  const [name, setname] = useState('');
   const [password, setpassword] = useState('');
   const [emailerror, setemailerror] = useState(null);
+  const [namerror, setnamerror] = useState(null);
   const [passworderror, setpassworderror] = useState(null);
-  useEffect(()=>{
+  const [loading, setloading] = useState(false);
+  useEffect(() => {
     GoogleSignin.configure({
-      webClientId: '18409459095-ejk7mhigmmptn1bqn2oefatpbbfedqs0.apps.googleusercontent.com',
+      webClientId:
+        '18409459095-ejk7mhigmmptn1bqn2oefatpbbfedqs0.apps.googleusercontent.com',
     });
-  },[])
-  
+  }, []);
+  const temp="";
+  const url = `https://ui-avatars.com/api/?name=${name
+    .split(' ')
+    .join('+')}&rounded=true&background=4D94FF&color=fff`;
   async function onGoogleButtonPress() {
     try {
-      const { idToken } = await GoogleSignin.signIn();
-  
-    // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-  
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(googleCredential);
+      const {idToken} = await GoogleSignin.signIn();
+
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+      // Sign-in the user with the credential
+      return auth().signInWithCredential(googleCredential);
     } catch (error) {
-      alert(error);
+      console.log(error);
     }
   }
   async function emailauth() {
     if (emailerror == '' && passworderror == '') {
+      setloading(true);
       auth()
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
-          navigation.navigate('AppStack');
+          firestore()
+            .collection('Users').doc(auth().currentUser.uid).set({
+              email: email,
+              name: name,
+              password: password,
+              image: url,
+              uid:auth().currentUser.uid,
+              Ads:[],
+              Favourites:[]
+            })
+            .then(() => {
+              navigation.navigate('AppStack');
+            })
+            .catch(err => {
+              console.log(err);
+            });
+          setloading(false);
         })
         .catch(error => {
           if (error.code === 'auth/email-already-in-use') {
             setemailerror('That email address is already in use!');
+            setloading(false);
           }
 
           if (error.code === 'auth/invalid-email') {
             setemailerror('That email address is invalid!');
+            setloading(false);
           }
         });
     } else {
+      namevalidator();
       emailvalidator();
       passwordvalidator();
     }
-  }
-  async function onFacebookButtonPress() {
-    // Attempt login with permissions
-    const result = await LoginManager.logInWithPermissions([
-      'public_profile',
-      'email',
-    ]);
-
-    if (result.isCancelled) {
-      throw 'User cancelled the login process';
-    }
-
-    // Once signed in, get the users AccesToken
-    const data = await AccessToken.getCurrentAccessToken();
-
-    if (!data) {
-      throw 'Something went wrong obtaining access token';
-    }
-
-    // Create a Firebase credential with the AccessToken
-    const facebookCredential = auth.FacebookAuthProvider.credential(
-      data.accessToken,
-    );
-
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(facebookCredential);
   }
   const emailvalidator = () => {
     const regex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
     if (email == '' || regex.test(email) == false) {
       setemailerror('Enter a valid email address !');
+      return false;
     } else {
       setemailerror('');
+      return true;
     }
   };
   const passwordvalidator = () => {
     if (password.length < 6) {
       setpassworderror('Password should be greater than 6 characters !');
+      return false;
     } else {
       setpassworderror('');
+      return true;
+    }
+  };
+  const namevalidator = () => {
+    if (/^[A-Za-z ]+$/.test(name) == false || name.length == 0 || name == '') {
+      setnamerror('Name is not valid');
+      return false;
+    } else {
+      setnamerror('');
+      return true;
     }
   };
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: 'black'}}>
       <View style={styles.header}>
         <Text style={styles.welcome}>Hello There</Text>
         <Text style={styles.continue}>Signup To Continue</Text>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.form}>
+          <View style={styles.inputview}>
+            <Text style={styles.formtext}>NAME</Text>
+            <TextInput
+              placeholder="Enter your name"
+              placeholderTextColor="#a6a6a6"
+              style={styles.input}
+              onChangeText={name => setname(name)}
+              onSubmitEditing={() => namevalidator()}
+              autoCapitalize="words"
+            />
+          </View>
+          <Text style={styles.error}>{namerror}</Text>
           <View style={styles.inputview}>
             <Text style={styles.formtext}>EMAIL</Text>
             <TextInput
@@ -115,27 +141,34 @@ export default function Signup({navigation}) {
               style={styles.input}
               keyboardType="email-address"
               onChangeText={email => setemail(email)}
-              onBlur={() => emailvalidator()}
+              onSubmitEditing={() => emailvalidator()}
             />
           </View>
-          <View>
-            <Text style={styles.error}>{emailerror}</Text>
-          </View>
+          <Text style={styles.error}>{emailerror}</Text>
           <View style={styles.inputview}>
-            <Text style={styles.formtext2}>PASSWORD</Text>
+            <Text style={styles.formtext}>PASSWORD</Text>
             <TextInput
               placeholder="Enter your password"
               placeholderTextColor="#a6a6a6"
               style={styles.input}
               secureTextEntry={true}
               onChangeText={password => setpassword(password)}
-              onBlur={() => passwordvalidator()}
+              onSubmitEditing={() => passwordvalidator()}
             />
           </View>
           <Text style={styles.error}>{passworderror}</Text>
         </View>
         <TouchableOpacity style={styles.button} onPress={() => emailauth()}>
           <Text style={styles.buttontext}>SIGNUP</Text>
+          {loading == true ? (
+            <ActivityIndicator
+              color="white"
+              size={20}
+              style={{alignSelf: 'center', marginLeft: '5%'}}
+            />
+          ) : (
+            <View></View>
+          )}
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
           <Text style={styles.signup}>
@@ -146,17 +179,17 @@ export default function Signup({navigation}) {
         <Text style={styles.or}>OR</Text>
         <View>
           <View style={styles.buttons}>
-            <TouchableOpacity style={styles.google} onPress={()=> onGoogleButtonPress()}>
-              <Image source={google} style={styles.icon} />
-            </TouchableOpacity>
             <TouchableOpacity
               style={styles.google}
               onPress={() =>
-                onFacebookButtonPress().then(() =>
-                  navigation.navigate('AppStack'),
-                )
+                namevalidator() == true
+                  ? onGoogleButtonPress().then(() =>
+                      navigation.navigate('AppStack'),
+                    )
+                  : namevalidator()
               }>
-              <Image source={facebook} style={styles.icon} />
+              <Text style={styles.googletext}>Continue With Google</Text>
+              <Image source={google} style={styles.icon} />
             </TouchableOpacity>
           </View>
         </View>
@@ -166,62 +199,63 @@ export default function Signup({navigation}) {
 }
 const styles = StyleSheet.create({
   header: {
-    height: 130,
+    height: '15%',
     backgroundColor: '#4d94ff',
   },
   welcome: {
-    fontSize: 34,
+    fontSize: 30,
     marginTop: 10,
-    marginLeft: '6%',
+    marginHorizontal: '6%',
     fontFamily: 'NotoSansJP-Thin',
     color: 'white',
   },
   continue: {
-    fontSize: 20,
-    marginLeft: '6%',
+    fontSize: 18,
+    marginHorizontal: '6%',
     fontFamily: 'NotoSansJP-Regular',
     color: 'white',
-    marginTop: -40,
+    marginTop:'-10%'
   },
   form: {
-    marginLeft: '6%',
-    marginTop: '15%',
-    marginRight: '5%',
+    marginHorizontal: '6%',
+    marginTop: '10%',
+    marginRight: '5%'
   },
   formtext: {
     fontFamily: 'NotoSansJP-Black',
-    fontSize: 18,
+    fontSize: 16,
+    color:'white'
   },
   input: {
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#a6a6a6',
-    fontSize: 17,
-    marginTop: '-3%',
-  },
-  formtext2: {
-    fontFamily: 'NotoSansJP-Black',
-    fontSize: 18,
+    borderBottomWidth: 0.3,
+    borderBottomColor: '#595959',
+    fontSize: 14,
+    paddingTop:'-5%',
+    color:'#cccccc'
   },
   button: {
     width: '90%',
-    height: '9%',
+    height: 40,
     alignSelf: 'center',
     backgroundColor: '#4d94ff',
     marginTop: '5%',
     borderRadius: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   buttontext: {
     color: 'white',
     textAlign: 'center',
     textAlignVertical: 'center',
-    fontSize: 17,
+    fontSize: 14,
     fontFamily: 'NotoSansJP-Bold',
   },
   signup: {
     textAlign: 'center',
     fontSize: 14,
-    marginTop: '1%',
     fontFamily: 'NotoSansJP-Regular',
+    color:'white'
   },
   or: {
     fontSize: 20,
@@ -234,26 +268,34 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: '5%',
-    marginBottom:'10%'
+    marginTop: '2%',
+    marginBottom: '8%',
   },
   icon: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
     alignSelf: 'center',
   },
   google: {
-    backgroundColor: 'white',
-    elevation: 6,
-    width: '30%',
-    height: 50,
-    alignItems: 'center',
+    backgroundColor: '#333333',
+    width: '90%',
+    height: 45,
     justifyContent: 'center',
     borderRadius: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    paddingVertical: '3%',
   },
   error: {
-    color: 'red',
+    color: '#ff6666',
     fontFamily: 'NotoSansJP-Regular',
     fontSize: 14,
+  },
+  googletext: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginRight: '5%',
+    justifyContent: 'center',
+    color: 'white',
   },
 });

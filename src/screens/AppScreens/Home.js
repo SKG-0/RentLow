@@ -1,12 +1,11 @@
-import React from 'react';
+import React,{useEffect, useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Image,
-  Touchable,
+  Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import book from '../../assets/images/book.png';
@@ -16,13 +15,24 @@ import furniture from '../../assets/images/furniture.png';
 import phone from '../../assets/images/phone.png';
 import property from '../../assets/images/property.png';
 import Ad from '../../assets/components/Ad';
+import firestore from '@react-native-firebase/firestore';
 export default function Home({navigation}) {
+  const [data,setdata]=useState([]);
+  useEffect(()=>{
+    const set=[]
+    firestore().collection('Ads').get().then(snapshot=>{
+      snapshot.forEach(data=>{
+        set.push(data.data());
+      })
+      setdata(set);
+    })
+  },[])
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{flex: 1, backgroundColor: 'black'}}>
       <View>
         <View></View>
         <TouchableOpacity style={styles.locationbar}>
-          <Icon name="map-marker" size={30} color="#4d94ff" />
+          <Icon name="map-marker" size={26} color="#4d94ff" style={{alignSelf:'center'}} />
           <Text style={styles.location}>Ghaziabad</Text>
         </TouchableOpacity>
       </View>
@@ -76,18 +86,13 @@ export default function Home({navigation}) {
           <Text style={styles.way}>your way</Text>
         </View>
         <View style={styles.ads}>
-          <TouchableOpacity onPress={() => navigation.navigate('AdScreen')}>
-            <Ad />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('AdScreen')}>
-            <Ad />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('AdScreen')}>
-            <Ad />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('AdScreen')}>
-            <Ad />
-          </TouchableOpacity>
+          {
+            data.map(res=>(
+              <TouchableOpacity onPress={() => navigation.navigate('AdScreen')}>
+                <Ad data={res} />
+              </TouchableOpacity>
+            ))
+          }
         </View>
       </ScrollView>
     </View>
@@ -102,11 +107,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   location: {
-    fontSize: 18,
+    fontSize: 14,
     fontFamily: 'NotoSansJP-Medium',
     textAlignVertical: 'center',
     marginLeft: '1%',
-    marginTop: '-2.5%',
+    color:'#d9d9d9'
   },
   main: {
     width: '100%',
@@ -114,13 +119,13 @@ const styles = StyleSheet.create({
   },
   explore: {
     fontFamily: 'NotoSansJP-Bold',
-    fontSize: 28,
-    color: '#333333',
+    fontSize: 22,
+    color: '#a6a6a6',
   },
   way: {
-    fontSize: 28,
+    fontSize: 22,
     fontFamily: 'NotoSansJP-Bold',
-    color: '#8c8c8c',
+    color: '#d9d9d9',
   },
   categoryimage: {
     width: 40,
@@ -131,10 +136,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   categorytext: {
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: 'NotoSansJP-Bold',
     textAlign: 'center',
-    color: '#333333',
+    color: '#bfbfbf',
   },
   categories: {
     marginTop: '5%',
@@ -147,11 +152,11 @@ const styles = StyleSheet.create({
   },
   categoriestext: {
     fontFamily: 'NotoSansJP-Bold',
-    fontSize: 20,
-    color: '#333333',
+    fontSize: 18,
+    color: 'white',
   },
   viewbtn: {
-    backgroundColor: '#80b3ff',
+    backgroundColor: '#4d94ff',
     width: '20%',
     height: 30,
     borderRadius: 30,

@@ -1,27 +1,26 @@
-import React from 'react';
+import React,{} from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import laptop from '../images/laptop.png';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-export default function Ad() {
+export default function Ad({data}) {
   return (
-    <TouchableOpacity style={styles.ad}>
+    <View style={styles.ad}>
       <View style={styles.image}>
-        <Image source={laptop} style={styles.laptop} />
+        <Image source={{uri:data.images[0].path}} style={styles.laptop} />
       </View>
       <View style={styles.info}>
         <View>
-          <Text style={styles.heading}>
-            Apple Macbook Air(2015) model with a lot
+          <Text style={styles.heading} numberOfLines={2}>
+            {data.heading}
           </Text>
         </View>
         <View>
-          <Text style={styles.description}>
-            No Major damages fully functional with all sensors
+          <Text style={styles.description} numberOfLines={3}>
+            {data.description}
           </Text>
         </View>
         <View style={styles.bottom}>
           <View>
-            <Text style={styles.price}>500/Month</Text>
+            <Text style={styles.price}>{data.price}/Month</Text>
           </View>
           <View>
             <Text style={styles.time}>1 week</Text>
@@ -36,16 +35,15 @@ export default function Ad() {
           </TouchableOpacity>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }
 const styles = StyleSheet.create({
   ad: {
     width: '93%',
-    backgroundColor: 'white',
-    height: 160,
+    backgroundColor: '#1a1a1a',
+    height:165,
     borderRadius: 20,
-    elevation: 4,
     display: 'flex',
     flexDirection: 'row',
     alignSelf: 'center',
@@ -58,24 +56,24 @@ const styles = StyleSheet.create({
   },
   info: {
     width: '65%',
+    alignSelf:'center'
   },
   laptop: {
     width: '100%',
     height: '55%',
   },
   heading: {
-    marginTop: '5%',
     fontFamily: 'Montserrat-Bold',
-    fontSize: 16,
-    marginHorizontal: '4%',
+    fontSize: 15,
+    marginHorizontal: '7%',
     color: '#4d94ff',
   },
   description: {
     marginTop: '5%',
     fontFamily: 'Montserrat-Bold',
-    fontSize: 14,
-    marginHorizontal: '4%',
+    fontSize: 12,
     color: '#8c8c8c',
+    marginHorizontal:'7%'
   },
   bottom: {
     display: 'flex',
@@ -90,6 +88,7 @@ const styles = StyleSheet.create({
   price: {
     fontFamily: 'Montserrat-Bold',
     color: '#4d94ff',
+    fontSize:13
   },
   time: {
     fontFamily: 'Montserrat-Bold',

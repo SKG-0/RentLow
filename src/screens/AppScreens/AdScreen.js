@@ -7,8 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Button from '../../assets/components/Button';
-import ImageSlider from 'react-native-image-slider';
+import { SliderBox } from "react-native-image-slider-box";
 export default function AdScreen({navigation}) {
   const images = [
     require('../../assets/images/machine1.jpg'),
@@ -16,11 +15,12 @@ export default function AdScreen({navigation}) {
     require('../../assets/images/machine3.jpg'),
   ];
   return (
+    <View style={{flex: 1, backgroundColor: 'black'}}>
     <ScrollView
-      style={{flex: 1, backgroundColor: 'white'}}
       showsVerticalScrollIndicator={false}>
       <View style={styles.cards}>
-        <ImageSlider
+      <SliderBox
+          sliderBoxHeight={300}
           images={images}
         />
       </View>
@@ -30,9 +30,9 @@ export default function AdScreen({navigation}) {
           <TouchableOpacity>
             <Icon
               name="heart-outline"
-              size={30}
+              size={18}
               style={styles.icon}
-              color="#4d94ff"
+              color="white"
             />
           </TouchableOpacity>
         </View>
@@ -61,20 +61,19 @@ export default function AdScreen({navigation}) {
           <Text style={styles.categorytype}>Emma Phillps</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={{marginBottom: '5%'}}>
-        <Button text="Chat" />
-      </TouchableOpacity>
+      <TouchableOpacity style={styles.button}>
+            <Text style={styles.text}>Chat</Text>
+        </TouchableOpacity>
     </ScrollView>
+    </View>
   );
 }
 const styles = StyleSheet.create({
   cards: {
-    width:'100%',
-    height: 400,
-    marginTop: '5%',
+    height: 300,
     alignSelf: 'center',
     borderRadius: 20,
-    marginHorizontal:'6%'
+    marginHorizontal:'6%',
   },
   priceicon: {
     marginTop: '8%',
@@ -84,20 +83,20 @@ const styles = StyleSheet.create({
   },
   price: {
     fontFamily: 'NotoSansJP-Bold',
-    fontSize: 20,
+    fontSize: 14,
     marginTop: '-4%',
     color: '#4d94ff',
   },
   heading: {
-    fontSize: 24,
+    fontSize: 18,
     fontFamily: 'NotoSansJP-Bold',
-    color: '#001940',
+    color: 'white',
   },
   description: {
-    fontSize: 16,
+    fontSize: 13,
     fontFamily: 'NotoSansJP-Light',
-    lineHeight: 25,
-    color: '#4d4d4d',
+    lineHeight: 20,
+    color: '#a6a6a6',
   },
   category: {
     marginTop: '3%',
@@ -106,13 +105,28 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   categorytext: {
-    fontSize: 16,
-    fontFamily: 'NotoSansJP-Bold',
-    color: '#001940',
-  },
-  categorytype: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'NotoSansJP-Bold',
     color: '#4d94ff',
   },
+  categorytype: {
+    fontSize: 14,
+    fontFamily: 'NotoSansJP-Bold',
+    color: 'white',
+  },
+  button:{
+    width: '90%',
+    height: 45,
+    alignSelf: 'center',
+    backgroundColor: '#4d94ff',
+    marginTop: '5%',
+    borderRadius: 10,
+    marginBottom:'5%'
+},
+text:{
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 16,
+    fontFamily: 'NotoSansJP-Bold'
+}
 });

@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Ad from '../../assets/components/Ad'
 export default function Search1() {
   return (
-    <View style={{flex:1,backgroundColor:'white'}}>
+    <View style={{flex:1,backgroundColor:'black'}}>
       <View style={styles.searchbar}>
         <Icon
           name="search"
@@ -18,7 +18,7 @@ export default function Search1() {
           placeholderTextColor="#8c8c8c"
         />
       </View>
-      <ScrollView>
+      <ScrollView style={{marginTop:'5%'}}>
           <TouchableOpacity>
               <Ad />
           </TouchableOpacity>
@@ -40,8 +40,7 @@ const styles = StyleSheet.create({
     width: '92%',
     alignSelf: 'center',
     marginTop: '5%',
-    backgroundColor: 'white',
-    elevation: 10,
+    backgroundColor: '#262626',
     borderRadius: 10,
   },
   searchicon: {

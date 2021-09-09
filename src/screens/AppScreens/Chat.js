@@ -10,8 +10,8 @@ import {
 import face from '../../assets/images/female1.png';
 export default function Chat({navigation}) {
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
-      <View style={{backgroundColor: '#4d94ff'}}>
+    <View style={{flex: 1, backgroundColor: 'black'}}>
+      <View>
         <Text style={styles.headtext}>Chats</Text>
       </View>
       <ScrollView style={styles.chats} showsVerticalScrollIndicator={false}>
@@ -39,11 +39,10 @@ export default function Chat({navigation}) {
 }
 const styles = StyleSheet.create({
   headtext: {
-    fontSize: 30,
+    fontSize: 26,
     fontFamily: 'NotoSansJP-Bold',
     marginHorizontal: '4%',
-    color: 'white',
-    marginVertical: '-2%',
+    color: '#4d94ff',
   },
   chat: {
     display: 'flex',
@@ -52,28 +51,29 @@ const styles = StyleSheet.create({
     marginVertical: '4%',
   },
   chats: {
-    marginHorizontal: '4%',
+    marginHorizontal: '3%',
   },
   image: {
-    width: 60,
-    height: 60,
+    width:70,
+    height:70,
     borderRadius: 50,
     justifyContent: 'center',
   },
   chatext: {
     marginLeft: '2%',
-    borderBottomWidth: 0.5,
-    borderBottomColor: 'black',
+    borderBottomWidth: 0.3,
+    borderBottomColor: '#666666',
     width: '100%',
+    marginTop:'4%'
   },
   name: {
     fontSize: 18,
     fontWeight: 'bold',
-    color:'#404040'
+    color:'white'
   },
   message: {
     fontSize:14,
-    color:'#737373',
+    color:'#a6a6a6',
     marginTop:2
   },
 });

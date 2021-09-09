@@ -16,8 +16,9 @@ export default function Tabs() {
       tabBarOptions={{
         showLabel: false,
         style: {
-          height: '9%',
-          backgroundColor: 'white',
+          height: '7%',
+          backgroundColor: 'black',
+          borderTopWidth:0
         },
         keyboardHidesTabBar: true,
       }}>
@@ -29,16 +30,11 @@ export default function Tabs() {
             <View>
               <Icon
                 name="home"
-                size={30}
-                color={focused ? '#4d94ff' : '#999999'}
+                size={26}
+                color={focused ? '#4d94ff' : '#d9d9d9'}
+                style={{alignSelf:'center'}}
               />
-              <Text
-                style={{
-                  color: focused ? '#4d94ff' : '#999999',
-                  fontWeight: 'bold',
-                }}>
-                Home
-              </Text>
+              
             </View>
           ),
         }}
@@ -51,18 +47,11 @@ export default function Tabs() {
             <View>
               <Icon2
                 name="search"
-                size={26}
-                color={focused ? '#4d94ff' : '#999999'}
+                size={24}
+                color={focused ? '#4d94ff' : '#d9d9d9'}
                 style={{alignSelf: 'center'}}
               />
-              <Text
-                style={{
-                  color: focused ? '#4d94ff' : '#999999',
-                  fontWeight: 'bold',
-                  marginBottom: -6,
-                }}>
-                Search
-              </Text>
+              
             </View>
           ),
         }}
@@ -75,17 +64,11 @@ export default function Tabs() {
             <View>
               <Icon
                 name="plus-circle-outline"
-                size={30}
-                color={focused ? '#4d94ff' : '#999999'}
+                size={28}
+                color={focused ? '#4d94ff' : '#d9d9d9'}
+                style={{alignSelf:'center'}}
               />
-              <Text
-                style={{
-                  color: focused ? '#4d94ff' : '#999999',
-                  fontWeight: 'bold',
-                  marginLeft: '3%',
-                }}>
-                Sell
-              </Text>
+              
             </View>
           ),
         }}
@@ -98,16 +81,11 @@ export default function Tabs() {
             <View>
               <Icon
                 name="chat"
-                size={30}
-                color={focused ? '#4d94ff' : '#999999'}
+                size={26}
+                color={focused ? '#4d94ff' : '#d9d9d9'}
+                style={{alignSelf:'center'}}
               />
-              <Text
-                style={{
-                  color: focused ? '#4d94ff' : '#999999',
-                  fontWeight: 'bold',
-                }}>
-                Chats
-              </Text>
+              
             </View>
           ),
         }}
@@ -120,16 +98,11 @@ export default function Tabs() {
             <View>
               <Icon
                 name="account"
-                size={30}
-                color={focused ? '#4d94ff' : '#999999'}
+                size={26}
+                color={focused ? '#4d94ff' : '#d9d9d9'}
+                style={{alignSelf:'center'}}
               />
-              <Text
-                style={{
-                  color: focused ? '#4d94ff' : '#999999',
-                  fontWeight: 'bold',
-                }}>
-                Profile
-              </Text>
+              
             </View>
           ),
         }}
