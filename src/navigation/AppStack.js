@@ -8,6 +8,7 @@ import MyAds from '../screens/AppScreens/MyAds';
 import Edit from '../screens/AppScreens/Edit';
 import Search1 from '../screens/AppScreens/Search1';
 import UserProfile from '../screens/AppScreens/UserProfile';
+import Searchtext from '../screens/AppScreens/Searchtext';
 const AppNavigator = createStackNavigator();
 export default function AppStack() {
   return (
@@ -25,6 +26,9 @@ export default function AppStack() {
       <AppNavigator.Screen
         name="Search1"
         component={Search1}></AppNavigator.Screen>
+      <AppNavigator.Screen
+        name="Searchtext"
+        component={Searchtext}></AppNavigator.Screen>
       <AppNavigator.Screen
         name="UserProfile"
         component={UserProfile}></AppNavigator.Screen>

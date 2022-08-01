@@ -1,11 +1,11 @@
-import React,{useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Image
+  Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import book from '../../assets/images/book.png';
@@ -16,24 +16,35 @@ import phone from '../../assets/images/phone.png';
 import property from '../../assets/images/property.png';
 import Ad from '../../assets/components/Ad';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 export default function Home({navigation}) {
-  const [data,setdata]=useState([]);
-  useEffect(()=>{
-    const set=[]
-    firestore().collection('Ads').get().then(snapshot=>{
-      snapshot.forEach(data=>{
-        set.push(data.data());
-      })
-      setdata(set);
-    })
-  },[])
+  const [data, setdata] = useState([]);
+  useEffect(() => {
+    const set = [];
+    firestore()
+      .collection('Ads')
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(data => {
+          if (data._data.postedBy != auth().currentUser.uid) {
+            set.push(data.data());
+          }
+        });
+        setdata(set);
+      });
+  }, []);
   return (
     <View style={{flex: 1, backgroundColor: 'black'}}>
       <View>
         <View></View>
         <TouchableOpacity style={styles.locationbar}>
-          <Icon name="map-marker" size={26} color="#4d94ff" style={{alignSelf:'center'}} />
-          <Text style={styles.location}>Ghaziabad</Text>
+          <Icon
+            name="map-marker"
+            size={26}
+            color="#4d94ff"
+            style={{alignSelf: 'center'}}
+          />
+          <Text style={styles.location}>India</Text>
         </TouchableOpacity>
       </View>
       <ScrollView showsVerticalScrollIndicator={false} style={styles.main}>
@@ -50,27 +61,63 @@ export default function Home({navigation}) {
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             style={styles.categories}>
-            <TouchableOpacity style={styles.category}>
+            <TouchableOpacity
+              style={styles.category}
+              onPress={() =>
+                navigation.navigate('Search1', {
+                  text: 'Fashion',
+                })
+              }>
               <Image source={fashion} style={styles.categoryimage} />
               <Text style={styles.categorytext}>Fashion</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.category}>
+            <TouchableOpacity
+              style={styles.category}
+              onPress={() =>
+                navigation.navigate('Search1', {
+                  text: 'Books',
+                })
+              }>
               <Image source={book} style={styles.categoryimage} />
               <Text style={styles.categorytext}>Books</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.category}>
+            <TouchableOpacity
+              style={styles.category}
+              onPress={() =>
+                navigation.navigate('Search1', {
+                  text: 'Phones',
+                })
+              }>
               <Image source={phone} style={styles.categoryimage} />
               <Text style={styles.categorytext}>Phones</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.category}>
+            <TouchableOpacity
+              style={styles.category}
+              onPress={() =>
+                navigation.navigate('Search1', {
+                  text: 'Furniture',
+                })
+              }>
               <Image source={furniture} style={styles.categoryimage} />
               <Text style={styles.categorytext}>Furniture</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.category}>
+            <TouchableOpacity
+              style={styles.category}
+              onPress={() =>
+                navigation.navigate('Search1', {
+                  text: 'Properties',
+                })
+              }>
               <Image source={property} style={styles.categoryimage} />
               <Text style={styles.categorytext}>Property</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.category}>
+            <TouchableOpacity
+              style={styles.category}
+              onPress={() =>
+                navigation.navigate('Search1', {
+                  text: 'Electronics',
+                })
+              }>
               <Image source={electronics} style={styles.categoryimage} />
               <Text style={styles.categorytext}>Electronics</Text>
             </TouchableOpacity>
@@ -86,13 +133,29 @@ export default function Home({navigation}) {
           <Text style={styles.way}>your way</Text>
         </View>
         <View style={styles.ads}>
-          {
-            data.map(res=>(
-              <TouchableOpacity onPress={() => navigation.navigate('AdScreen')}>
+          {data.length == 0 ? (
+            <Text
+              style={{
+                color: 'gray',
+                fontSize: 16,
+                textAlign: 'center',
+                marginTop: '25%',
+                fontFamily: 'NotoSansJP-Bold',
+              }}>
+              Nothing to Show
+            </Text>
+          ) : (
+            data.map(res => (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('AdScreen', {
+                    data: res,
+                  })
+                }>
                 <Ad data={res} />
               </TouchableOpacity>
             ))
-          }
+          )}
         </View>
       </ScrollView>
     </View>
@@ -111,7 +174,7 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSansJP-Medium',
     textAlignVertical: 'center',
     marginLeft: '1%',
-    color:'#d9d9d9'
+    color: '#d9d9d9',
   },
   main: {
     width: '100%',

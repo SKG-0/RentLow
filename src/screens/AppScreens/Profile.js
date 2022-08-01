@@ -37,7 +37,11 @@ export default function Profile({navigation}) {
           <ActivityIndicator
             size={24}
             color="white"
-            style={{alignSelf: 'center', justifyContent: 'center',marginLeft:'5%'}}
+            style={{
+              alignSelf: 'center',
+              justifyContent: 'center',
+              marginLeft: '5%',
+            }}
           />
         ) : (
           <Image
@@ -129,7 +133,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     alignSelf: 'center',
-    borderRadius:50
+    borderRadius: 50,
   },
   text: {
     width: '70%',

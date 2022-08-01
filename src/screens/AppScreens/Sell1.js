@@ -1,65 +1,87 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity,ActivityIndicator} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 export default function Sell1({navigation, route}) {
   const [images, setimages] = new useState(null);
   const [loading, setloading] = useState(false);
-  const [ads,setads]=useState([]);
-  useEffect(()=>{
+  const [ads, setads] = useState([]);
+  useEffect(() => {
     const uid = auth().currentUser.uid;
-    firestore().collection('Users').doc(uid).onSnapshot((data)=>{
-      setads(data.data().Ads)
-    })
-  },[]);
+    firestore()
+      .collection('Users')
+      .doc(uid)
+      .onSnapshot(data => {
+        setads(data.data().Ads);
+      });
+  }, []);
   const pickimage = () => {
     ImagePicker.openPicker({
       width: 300,
       height: 300,
       cropping: true,
       multiple: true,
-    }) 
+    })
       .then(image => {
         setimages(image);
       })
       .catch(error => {
-        alert(error)
+        alert(error);
       });
   };
   const post = () => {
+    var today = new Date();
+    var date =
+      today.getDate() +
+      '-' +
+      (today.getMonth() + 1) +
+      '-' +
+      today.getFullYear();
     if (images != null) {
       setloading(true);
       const uid = auth().currentUser.uid;
-      firestore().collection('Ads').add({
-        heading: route.params.heading,
-        description: route.params.description,
-        price: route.params.price,
-        category: options[route.params.category],
-        postedBy: uid,
-        images:images
-      }).then((docRef)=>{
-        navigation.navigate('Home');
-        ads.push(docRef._documentPath._parts[1]);
-        firestore().collection('Users').doc(uid).update({
-          Ads:ads
+      firestore()
+        .collection('Ads')
+        .add({
+          heading: route.params.heading,
+          description: route.params.description,
+          price: route.params.price,
+          category: options[route.params.category],
+          postedBy: uid,
+          images: images,
+          date: date,
+          email: auth().currentUser.email,
         })
-      }).catch(err=> alert(err));
+        .then(docRef => {
+          navigation.navigate('Home');
+          ads.push(docRef._documentPath._parts[1]);
+          firestore().collection('Users').doc(uid).update({
+            Ads: ads,
+          });
+        })
+        .catch(err => alert(err));
       setloading(false);
     } else {
       alert('Please select images');
     }
   };
   const options = [
-    'Bike',
-    'Book',
-    'Car',
+    'Bikes',
+    'Books',
+    'Cars',
     'Electronics',
     'Fashion',
     'Furniture',
     'Phones',
-    'Property',
-    'Other',
+    'Properties',
+    'Others',
   ];
   return (
     <View style={styles.main}>
@@ -75,14 +97,14 @@ export default function Sell1({navigation, route}) {
       <TouchableOpacity style={styles.button} onPress={() => post()}>
         <Text style={styles.text}>Post My Ad</Text>
         {loading == true ? (
-            <ActivityIndicator
-              color="white"
-              size={20}
-              style={{alignSelf: 'center', marginLeft: '5%'}}
-            />
-          ) : (
-            <View></View>
-          )}
+          <ActivityIndicator
+            color="white"
+            size={20}
+            style={{alignSelf: 'center', marginLeft: '5%'}}
+          />
+        ) : (
+          <View></View>
+        )}
       </TouchableOpacity>
     </View>
   );
@@ -125,7 +147,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom:'3%'
+    marginBottom: '3%',
   },
   text: {
     color: 'white',

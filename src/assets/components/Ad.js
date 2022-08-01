@@ -1,11 +1,17 @@
-import React,{} from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 export default function Ad({data}) {
   return (
     <View style={styles.ad}>
       <View style={styles.image}>
-        <Image source={{uri:data.images[0].path}} style={styles.laptop} />
+        <Image source={{uri: data.images[0].path}} style={styles.laptop} />
       </View>
       <View style={styles.info}>
         <View>
@@ -42,7 +48,7 @@ const styles = StyleSheet.create({
   ad: {
     width: '93%',
     backgroundColor: '#1a1a1a',
-    height:165,
+    height: 165,
     borderRadius: 20,
     display: 'flex',
     flexDirection: 'row',
@@ -56,7 +62,7 @@ const styles = StyleSheet.create({
   },
   info: {
     width: '65%',
-    alignSelf:'center'
+    alignSelf: 'center',
   },
   laptop: {
     width: '100%',
@@ -73,7 +79,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Bold',
     fontSize: 12,
     color: '#8c8c8c',
-    marginHorizontal:'7%'
+    marginHorizontal: '7%',
   },
   bottom: {
     display: 'flex',
@@ -88,7 +94,7 @@ const styles = StyleSheet.create({
   price: {
     fontFamily: 'Montserrat-Bold',
     color: '#4d94ff',
-    fontSize:13
+    fontSize: 13,
   },
   time: {
     fontFamily: 'Montserrat-Bold',

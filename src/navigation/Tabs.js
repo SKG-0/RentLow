@@ -18,7 +18,7 @@ export default function Tabs() {
         style: {
           height: '7%',
           backgroundColor: 'black',
-          borderTopWidth:0
+          borderTopWidth: 0,
         },
         keyboardHidesTabBar: true,
       }}>
@@ -30,11 +30,10 @@ export default function Tabs() {
             <View>
               <Icon
                 name="home"
-                size={26}
+                size={28}
                 color={focused ? '#4d94ff' : '#d9d9d9'}
-                style={{alignSelf:'center'}}
+                style={{alignSelf: 'center'}}
               />
-              
             </View>
           ),
         }}
@@ -51,7 +50,6 @@ export default function Tabs() {
                 color={focused ? '#4d94ff' : '#d9d9d9'}
                 style={{alignSelf: 'center'}}
               />
-              
             </View>
           ),
         }}
@@ -66,14 +64,13 @@ export default function Tabs() {
                 name="plus-circle-outline"
                 size={28}
                 color={focused ? '#4d94ff' : '#d9d9d9'}
-                style={{alignSelf:'center'}}
+                style={{alignSelf: 'center'}}
               />
-              
             </View>
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Chat"
         component={Chat}
         options={{
@@ -89,7 +86,7 @@ export default function Tabs() {
             </View>
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Profile"
         component={Profile}
@@ -100,9 +97,8 @@ export default function Tabs() {
                 name="account"
                 size={26}
                 color={focused ? '#4d94ff' : '#d9d9d9'}
-                style={{alignSelf:'center'}}
+                style={{alignSelf: 'center'}}
               />
-              
             </View>
           ),
         }}

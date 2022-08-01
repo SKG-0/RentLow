@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import google from '../../assets/images/google.png';
@@ -27,7 +27,7 @@ export default function Signup({navigation}) {
         '18409459095-ejk7mhigmmptn1bqn2oefatpbbfedqs0.apps.googleusercontent.com',
     });
   }, []);
-  const temp="";
+  const temp = '';
   const url = `https://ui-avatars.com/api/?name=${name
     .split(' ')
     .join('+')}&rounded=true&background=4D94FF&color=fff`;
@@ -51,14 +51,16 @@ export default function Signup({navigation}) {
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
           firestore()
-            .collection('Users').doc(auth().currentUser.uid).set({
+            .collection('Users')
+            .doc(auth().currentUser.uid)
+            .set({
               email: email,
               name: name,
               password: password,
               image: url,
-              uid:auth().currentUser.uid,
-              Ads:[],
-              Favourites:[]
+              uid: auth().currentUser.uid,
+              Ads: [],
+              Favourites: [],
             })
             .then(() => {
               navigation.navigate('AppStack');
@@ -199,7 +201,7 @@ export default function Signup({navigation}) {
 }
 const styles = StyleSheet.create({
   header: {
-    height: '15%',
+    height: '20%',
     backgroundColor: '#4d94ff',
   },
   welcome: {
@@ -214,24 +216,24 @@ const styles = StyleSheet.create({
     marginHorizontal: '6%',
     fontFamily: 'NotoSansJP-Regular',
     color: 'white',
-    marginTop:'-10%'
+    marginTop: '-7%',
   },
   form: {
     marginHorizontal: '6%',
     marginTop: '10%',
-    marginRight: '5%'
+    marginRight: '5%',
   },
   formtext: {
     fontFamily: 'NotoSansJP-Black',
     fontSize: 16,
-    color:'white'
+    color: 'white',
   },
   input: {
     borderBottomWidth: 0.3,
     borderBottomColor: '#595959',
     fontSize: 14,
-    paddingTop:'-5%',
-    color:'#cccccc'
+    paddingTop: '-5%',
+    color: '#cccccc',
   },
   button: {
     width: '90%',
@@ -255,7 +257,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 14,
     fontFamily: 'NotoSansJP-Regular',
-    color:'white'
+    color: 'white',
   },
   or: {
     fontSize: 20,

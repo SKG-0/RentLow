@@ -7,12 +7,7 @@ export default function Favourite() {
       <View style={styles.header}>
         <Text style={styles.headtext}>Favourites</Text>
       </View>
-      <ScrollView>
-        <Ad />
-        <Ad />
-        <Ad />
-        <Ad />
-      </ScrollView>
+      <ScrollView></ScrollView>
     </View>
   );
 }
@@ -21,6 +16,6 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontFamily: 'NotoSansJP-Bold',
     marginHorizontal: '4%',
-    color: '#4d94ff'
+    color: '#4d94ff',
   },
 });

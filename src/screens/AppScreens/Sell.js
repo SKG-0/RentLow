@@ -5,7 +5,7 @@ import {
   StyleSheet,
   TextInput,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
 export default function Sell({navigation}) {
@@ -17,6 +17,7 @@ export default function Sell({navigation}) {
   const [description, setdescription] = useState('');
   const [price, setprice] = useState(null);
   const [category, setcategory] = useState(null);
+  const [location, setlocation] = useState('');
   const headingvalidator = () => {
     if (heading.length < 10) {
       seterror1('Enter minimum 10 characters');
@@ -38,14 +39,13 @@ export default function Sell({navigation}) {
       seterror3('');
     }
   };
-  const categoryvalidator=()=>{
-    if(category==null){
+  const categoryvalidator = () => {
+    if (category == null) {
       seterror4('Please select a category');
-    }
-    else{
+    } else {
       seterror4('');
     }
-  }
+  };
   return (
     <View style={{backgroundColor: 'black', flex: 1}}>
       <View>
@@ -85,19 +85,19 @@ export default function Sell({navigation}) {
         <Text style={styles.inputext}>Category</Text>
         <ModalDropdown
           onSelect={category => {
-            setcategory(category) 
-            seterror4('')
+            setcategory(category);
+            seterror4('');
           }}
           options={[
-            'Bike',
-            'Book',
-            'Car',
+            'Bikes',
+            'Books',
+            'Cars',
             'Electronics',
             'Fashion',
             'Furniture',
             'Phones',
-            'Property',
-            'Other',
+            'Properties',
+            'Others',
           ]}
           textStyle={{
             fontSize: 14,
@@ -123,15 +123,17 @@ export default function Sell({navigation}) {
           placeholder="Location"
           style={styles.input}
           placeholderTextColor="#8c8c8c"
+          onChangeText={location => setprice(location)}
         />
         <TouchableOpacity
           onPress={() => {
-            if (error1 == '' && error2 == '' && error3 == ''&&error4=='') {
-              navigation.navigate('Sell1',{
-                heading:heading,
-                description:description,
-                price:price,
-                category:category
+            if (error1 == '' && error2 == '' && error3 == '' && error4 == '') {
+              navigation.navigate('Sell1', {
+                heading: heading,
+                description: description,
+                price: price,
+                category: category,
+                location: location,
               });
             } else {
               headingvalidator();
@@ -142,7 +144,7 @@ export default function Sell({navigation}) {
           }}
           style={styles.button}>
           <Text style={styles.text}>Next</Text>
-        </TouchableOpacity> 
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
@@ -153,7 +155,7 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSansJP-Bold',
     marginHorizontal: '4%',
     color: '#4d94ff',
-    marginTop:'2%'
+    marginTop: '2%',
   },
   input: {
     width: '90%',
@@ -164,7 +166,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.3,
     paddingBottom: -5,
     color: '#d9d9d9',
-    marginLeft: '-3%'
+    marginLeft: '-3%',
   },
   inputext: {
     fontSize: 16,
@@ -172,7 +174,7 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSansJP-Bold',
     color: 'white',
     marginBottom: '-3%',
-    marginTop:'2%'
+    marginTop: '2%',
   },
   error: {
     color: '#ff6666',
@@ -180,19 +182,19 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSansJP-Bold',
     marginHorizontal: '4%',
   },
-  button:{
+  button: {
     width: '90%',
     height: 45,
     alignSelf: 'center',
     backgroundColor: '#4d94ff',
     marginTop: '10%',
     borderRadius: 10,
-    marginBottom:'3%'
-},
-  text:{
+    marginBottom: '3%',
+  },
+  text: {
     color: 'white',
     textAlign: 'center',
     fontSize: 16,
-    fontFamily: 'NotoSansJP-Bold'
-  }
+    fontFamily: 'NotoSansJP-Bold',
+  },
 });

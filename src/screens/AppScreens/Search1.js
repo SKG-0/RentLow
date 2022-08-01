@@ -1,10 +1,33 @@
-import React from 'react';
-import {View, TextInput, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Ad from '../../assets/components/Ad'
-export default function Search1() {
+import Ad from '../../assets/components/Ad';
+import firestore from '@react-native-firebase/firestore';
+export default function Search1({route, navigation}) {
+  const [data, setdata] = useState([]);
+  useEffect(() => {
+    const set = [];
+    firestore()
+      .collection('Ads')
+      .where('category', '==', route.params.text)
+      .get()
+      .then(data => {
+        data.forEach(data => {
+          set.push(data._data);
+        });
+        setdata(set);
+      })
+      .catch(err => console.log(err));
+  }, []);
   return (
-    <View style={{flex:1,backgroundColor:'black'}}>
+    <View style={{flex: 1, backgroundColor: 'black'}}>
       <View style={styles.searchbar}>
         <Icon
           name="search"
@@ -18,17 +41,21 @@ export default function Search1() {
           placeholderTextColor="#8c8c8c"
         />
       </View>
-      <ScrollView style={{marginTop:'5%'}}>
-          <TouchableOpacity>
-              <Ad />
-          </TouchableOpacity>
-          <TouchableOpacity>
-              <Ad />
-          </TouchableOpacity><TouchableOpacity>
-              <Ad />
-          </TouchableOpacity><TouchableOpacity>
-              <Ad />
-          </TouchableOpacity>
+      <ScrollView style={{marginTop: '5%'}}>
+        {data.length == 0 ? (
+          <Text style={styles.nothingtext}>Nothing to show</Text>
+        ) : (
+          data.map(res => (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('AdScreen', {
+                  data: res,
+                })
+              }>
+              <Ad data={res} />
+            </TouchableOpacity>
+          ))
+        )}
       </ScrollView>
     </View>
   );
@@ -47,5 +74,11 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginLeft: '2%',
     marginRight: '1%',
+  },
+  nothingtext: {
+    color: 'white',
+    textAlign: 'center',
+    marginTop: '50%',
+    fontSize: 20,
   },
 });

@@ -176,7 +176,7 @@ export default function Login({navigation}) {
 }
 const styles = StyleSheet.create({
   header: {
-    height: '15%',
+    height: '20%',
     backgroundColor: '#4d94ff',
   },
   welcome: {
@@ -191,24 +191,24 @@ const styles = StyleSheet.create({
     marginHorizontal: '6%',
     fontFamily: 'NotoSansJP-Regular',
     color: 'white',
-    marginTop:'-10%'
+    marginTop: '-7%',
   },
   form: {
     marginHorizontal: '6%',
     marginTop: '10%',
-    marginRight: '5%'
+    marginRight: '5%',
   },
   formtext: {
     fontFamily: 'NotoSansJP-Black',
     fontSize: 16,
-    color:'white'
+    color: 'white',
   },
   input: {
     borderBottomWidth: 0.3,
     borderBottomColor: '#595959',
     fontSize: 14,
-    paddingTop:'-5%',
-    color:'#cccccc'
+    paddingTop: '-5%',
+    color: '#cccccc',
   },
   formtext2: {
     fontFamily: 'NotoSansJP-Black',
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 14,
     fontFamily: 'NotoSansJP-Regular',
-    color:'white'
+    color: 'white',
   },
   or: {
     fontSize: 20,
